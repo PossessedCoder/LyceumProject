@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(922, 877)
+        Form.resize(920, 880)
         self.horizontalLayoutWidget = QtWidgets.QWidget(Form)
         self.horizontalLayoutWidget.setGeometry(QtCore.QRect(30, 10, 202, 80))
         self.horizontalLayoutWidget.setObjectName("horizontalLayoutWidget")
@@ -119,8 +119,8 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
-        self.save_cypher_button.setText(_translate("Form", "PushButton"))
-        self.open_cypher_button.setText(_translate("Form", "PushButton"))
+        self.save_cypher_button.setText(_translate("Form", "Сохранить"))  # TODO: Мудак сделай иконку
+        self.open_cypher_button.setText(_translate("Form", "PushButton"))  # TODO: Мудак сделай иконку
         self.enc_dec_label.setText(_translate("Form", "Шифровальщик/Дешифровальщик"))
         self.textEdit.setHtml(_translate("Form",
                                          "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"

@@ -9,9 +9,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-
-__all__ = ('Ui_Form',)
-
+from PyQt5 import uic
 
 class Ui_Form(object):
     def setupUi(self, Form):
@@ -116,11 +114,11 @@ class Ui_Form(object):
         self.open_cypher_button.setText(_translate("Form", "PushButton"))
         self.enc_dec_label.setText(_translate("Form", "Шифровальщик/Дешифровальщик"))
         self.cypher_inp.setHtml(_translate("Form",
-                                         "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-                                         "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-                                         "p, li { white-space: pre-wrap; }\n"
-                                         "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-                                         "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>"))
+                                           "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+                                           "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+                                           "p, li { white-space: pre-wrap; }\n"
+                                           "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+                                           "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>"))
         self.decrypt_button.setText(_translate("Form", "Расшифровать"))
         self.encrypt_button.setText(_translate("Form", "Зашифровать"))
         self.password_gen_label.setText(_translate("Form", "Генератор паролей"))
@@ -128,3 +126,15 @@ class Ui_Form(object):
         self.password_save_button.setText(_translate("Form", "Save pass"))
         self.settings.setText(_translate("Form", "Settings"))
         self.theme_switch_button.setText(_translate("Form", "theme_switch"))
+
+
+class MyWidget(QtWidgets):
+    def __init__(self):
+        super().__init__()
+        uic.loadUi('01.ui', self)  # Загружаем дизайн
+        self.pushButton.clicked.connect(self.run)
+        # Обратите внимание: имя элемента такое же как в QTDesigner
+
+    def run(self):
+        self.label.setText("OK")
+        # Имя элемента совпадает с objectName в QTDesigner

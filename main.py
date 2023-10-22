@@ -13,7 +13,9 @@ class App:
         self.ui = Ui_Form()
         self.app.setStyle("Fusion")
         self.ui.setupUi(self.form)
+        self.theme_switch()
         self.ui.theme_switch_button.clicked.connect(self.theme_switch)
+
         for el in codings_dict.keys():
             self.ui.cypher_list.addItem(el)
 

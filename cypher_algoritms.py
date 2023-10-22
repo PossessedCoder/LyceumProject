@@ -1,4 +1,5 @@
 from string import ascii_lowercase
+from random import choice
 
 
 def morse(st: str) -> str:
@@ -36,5 +37,28 @@ def atbash(st: str) -> str:
             ans += el
     return ans
 
+
+def password_gen(length, contains_special_symbols, contains_numbers, contains_upper_letters, contains_lower_letters):
+    alphabet = [ascii_lowercase, ascii_lowercase.upper(), '1234567890', '!@#$%^&*()—_+=;:,./?\\|`~[]{}']
+    if not contains_special_symbols:
+        alphabet.remove('!@#$%^&*()—_+=;:,./?\\|`~[]{}')
+    if not contains_numbers:
+        alphabet.remove('1234567890')
+    if not contains_upper_letters:
+        alphabet.remove(ascii_lowercase.upper())
+    if not contains_lower_letters:
+        alphabet.remove(ascii_lowercase)
+    alphabet_copy, alphabet = alphabet.copy()[:], []
+    for el in alphabet_copy:
+        alphabet.extend(tuple(el))
+    alphabet_copy = ()
+    if length == 0:
+        return 'Длина пароля не может быть равна 0'
+    if len(alphabet) == 0:
+        return 'Недостаточно символов для генерации пароля'
+    gen = []
+    for _ in range(length):
+        gen.append(choice(alphabet))
+    return ''.join(gen)
 
 codings_dict = {'Морзе': morse, 'Атбаш': atbash}

@@ -56,6 +56,7 @@ class App:
 
     def pass_gen(self):
         self.ui.password_gen_out.setPlainText(password_gen(8, True, True, True, True))
+
     def run(self):
         self.form.show()
         sys.exit(self.app.exec_())

@@ -35,3 +35,6 @@ def atbash(st: str) -> str:
         else:
             ans += el
     return ans
+
+
+codings_dict = {'Морзе': morse, 'Атбаш': atbash}

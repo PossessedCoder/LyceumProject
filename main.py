@@ -15,6 +15,7 @@ class App:
         self.ui.setupUi(self.form)
         self.theme_switch()
         self.ui.theme_switch_button.clicked.connect(self.theme_switch)
+        self.ui.pass_gen_button.clicked.connect(self.pass_gen)
 
         for el in codings_dict.keys():
             self.ui.cypher_list.addItem(el)
@@ -53,6 +54,8 @@ class App:
             palette.setColor(QPalette.HighlightedText, QColor(255, 255, 255))
             self.app.setPalette(palette)
 
+    def pass_gen(self):
+        self.ui.password_gen_out.setPlainText(password_gen(8, True, True, True, True))
     def run(self):
         self.form.show()
         sys.exit(self.app.exec_())

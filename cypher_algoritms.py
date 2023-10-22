@@ -2,6 +2,14 @@ from string import ascii_lowercase
 from random import choice
 
 
+class LegthError(Exception):
+    pass
+
+
+class NotEnoughCharactersError(Exception):
+    pass
+
+
 def morse(st: str) -> str:
     codes = {'a': '.-', 'b': '-...', 'c': '-.-.', 'd': '-..', 'e': '.', 'f': '..-.', 'g': '--.', 'h': '....', 'i': '..',
              'j': '.---', 'k': '-.-', 'l': '.-..', 'm': '--', 'n': '-.', 'o': '---', 'p': '.--.', 'q': '--.-',
@@ -53,12 +61,13 @@ def password_gen(length, contains_special_symbols, contains_numbers, contains_up
         alphabet.extend(tuple(el))
     alphabet_copy = ()
     if length == 0:
-        return 'Длина пароля не может быть равна 0'
+        raise LegthError('Длина пароля не может быть равна 0')
     if len(alphabet) == 0:
-        return 'Недостаточно символов для генерации пароля'
+        raise NotEnoughCharactersError('Недостачно символов для генерации пароля')
     gen = []
     for _ in range(length):
         gen.append(choice(alphabet))
     return ''.join(gen)
+
 
 codings_dict = {'Морзе': morse, 'Атбаш': atbash}

@@ -45,9 +45,9 @@ class Ui_Form(object):
         self.verticalLayout_4.addWidget(self.enc_dec_label)
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
-        self.textEdit = QtWidgets.QTextEdit(Form)
-        self.textEdit.setObjectName("textEdit")
-        self.horizontalLayout_3.addWidget(self.textEdit)
+        self.cypher_inp = QtWidgets.QTextEdit(Form)
+        self.cypher_inp.setObjectName("cypher_inp")
+        self.horizontalLayout_3.addWidget(self.cypher_inp)
         self.verticalLayout_2 = QtWidgets.QVBoxLayout()
         self.verticalLayout_2.setSpacing(0)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
@@ -65,9 +65,9 @@ class Ui_Form(object):
         self.cypher_button_group.addButton(self.encrypt_button)
         self.verticalLayout_2.addWidget(self.encrypt_button)
         self.horizontalLayout_3.addLayout(self.verticalLayout_2)
-        self.textEdit_2 = QtWidgets.QTextEdit(Form)
-        self.textEdit_2.setObjectName("textEdit_2")
-        self.horizontalLayout_3.addWidget(self.textEdit_2)
+        self.cypher_out = QtWidgets.QTextEdit(Form)
+        self.cypher_out.setObjectName("cypher_out")
+        self.horizontalLayout_3.addWidget(self.cypher_out)
         self.verticalLayout_4.addLayout(self.horizontalLayout_3)
         self.verticalLayout.addLayout(self.verticalLayout_4)
         self.verticalLayout_5 = QtWidgets.QVBoxLayout()
@@ -85,9 +85,9 @@ class Ui_Form(object):
         self.pass_gen_button = QtWidgets.QPushButton(Form)
         self.pass_gen_button.setObjectName("pass_gen_button")
         self.horizontalLayout_4.addWidget(self.pass_gen_button)
-        self.plainTextEdit = QtWidgets.QPlainTextEdit(Form)
-        self.plainTextEdit.setObjectName("plainTextEdit")
-        self.horizontalLayout_4.addWidget(self.plainTextEdit)
+        self.password_gen_out = QtWidgets.QPlainTextEdit(Form)
+        self.password_gen_out.setObjectName("password_gen_out")
+        self.horizontalLayout_4.addWidget(self.password_gen_out)
         self.verticalLayout_3 = QtWidgets.QVBoxLayout()
         self.verticalLayout_3.setObjectName("verticalLayout_3")
         self.password_save_button = QtWidgets.QPushButton(Form)
@@ -115,7 +115,7 @@ class Ui_Form(object):
         self.save_cypher_button.setText(_translate("Form", "PushButton"))
         self.open_cypher_button.setText(_translate("Form", "PushButton"))
         self.enc_dec_label.setText(_translate("Form", "Шифровальщик/Дешифровальщик"))
-        self.textEdit.setHtml(_translate("Form",
+        self.cypher_inp.setHtml(_translate("Form",
                                          "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
                                          "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
                                          "p, li { white-space: pre-wrap; }\n"

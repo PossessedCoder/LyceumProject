@@ -60,8 +60,8 @@ def password_gen(length, contains_special_symbols, contains_numbers, contains_up
     for el in alphabet_copy:
         alphabet.extend(tuple(el))
     alphabet_copy = ()
-    if length == 0:
-        raise LegthError('Длина пароля не может быть равна 0')
+    if length <= 0:
+        raise LegthError('Длина пароля должна быть больше 0')
     if len(alphabet) == 0:
         raise NotEnoughCharactersError('Недостачно символов для генерации пароля')
     gen = []

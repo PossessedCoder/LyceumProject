@@ -34,7 +34,7 @@ class Morse:
             if el.lower() in self.codes.keys():
                 ans += self.codes[el.lower()] + ' ' if el.lower() == el else self.codes[el.lower()].upper() + ' '
             else:
-                ans += el + ' ' if el != ' ' else ' '
+                ans += el + ' ' if el != ' ' else ''
         return ans
 
     def decode(self, st):
@@ -63,8 +63,8 @@ class Atbash:
                         (self.alphabet_rus.index(el.lower()) + 1) * -1].upper()
             elif el.lower() in self.alphabet_eng:
                 ans += self.alphabet_eng[(self.alphabet_eng.index(el.lower()) + 1) * -1] if el.lower() == el else \
-                    self.alphabet_rus[
-                        (self.alphabet_rus.index(el.lower()) + 1) * -1].upper()
+                    self.alphabet_eng[
+                        (self.alphabet_eng.index(el.lower()) + 1) * -1].upper()
             else:
                 ans += el
         return ans

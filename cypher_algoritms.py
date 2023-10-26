@@ -34,7 +34,7 @@ class Morse:
             if el.lower() in self.codes.keys():
                 ans += self.codes[el.lower()] + ' ' if el.lower() == el else self.codes[el.lower()].upper() + ' '
             else:
-                ans += el + ' ' if el != ' ' else ''
+                ans += el + ' ' if el != ' ' else ' '
         return ans
 
     def decode(self, st):

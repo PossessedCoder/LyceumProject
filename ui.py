@@ -52,13 +52,13 @@ class Ui_Form(object):
         self.cypher_list = QtWidgets.QComboBox(Form)
         self.cypher_list.setObjectName("cypher_list")
         self.verticalLayout_2.addWidget(self.cypher_list)
-        self.decrypt_button = QtWidgets.QRadioButton(Form)
+        self.decrypt_button = QtWidgets.QPushButton(Form)
         self.decrypt_button.setObjectName("decrypt_button")
         self.cypher_button_group = QtWidgets.QButtonGroup(Form)
         self.cypher_button_group.setObjectName("cypher_button_group")
         self.cypher_button_group.addButton(self.decrypt_button)
         self.verticalLayout_2.addWidget(self.decrypt_button)
-        self.encrypt_button = QtWidgets.QRadioButton(Form)
+        self.encrypt_button = QtWidgets.QPushButton(Form)
         self.encrypt_button.setObjectName("encrypt_button")
         self.cypher_button_group.addButton(self.encrypt_button)
         self.verticalLayout_2.addWidget(self.encrypt_button)
@@ -110,8 +110,8 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
-        self.save_cypher_button.setText(_translate("Form", "PushButton"))
-        self.open_cypher_button.setText(_translate("Form", "PushButton"))
+        self.save_cypher_button.setText(_translate("Form", "Сохранить"))
+        self.open_cypher_button.setText(_translate("Form", "Открыть"))
         self.enc_dec_label.setText(_translate("Form", "Шифровальщик/Дешифровальщик"))
         self.cypher_inp.setHtml(_translate("Form",
                                            "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
@@ -128,13 +128,13 @@ class Ui_Form(object):
         self.theme_switch_button.setText(_translate("Form", "theme_switch"))
 
 
-class MyWidget(QtWidgets):
-    def __init__(self):
-        super().__init__()
-        uic.loadUi('01.ui', self)  # Загружаем дизайн
-        self.pushButton.clicked.connect(self.run)
-        # Обратите внимание: имя элемента такое же как в QTDesigner
-
-    def run(self):
-        self.label.setText("OK")
+# class MyWidget(QtWidgets):
+#     def __init__(self):
+#         super().__init__()
+#         uic.loadUi('01.ui', self)  # Загружаем дизайн
+#         self.pushButton.clicked.connect(self.run)
+#         # Обратите внимание: имя элемента такое же как в QTDesigner
+#
+#     def run(self):
+#         self.label.setText("OK")
         # Имя элемента совпадает с objectName в QTDesigner

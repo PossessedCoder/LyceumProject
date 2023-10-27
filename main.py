@@ -23,6 +23,8 @@ class App:
             self.ui.cypher_list.addItem(el)
         self.ui.decrypt_button.clicked.connect(self.decrypt)
         self.ui.encrypt_button.clicked.connect(self.encrypt)
+        self.ui.settings.clicked.connect(self.settings_open)
+        self.password_gen_settings = None
 
     def theme_switch(self):
         if self.app.palette().color(QPalette.Window).getRgb() != (53, 53, 53, 255):
@@ -59,7 +61,21 @@ class App:
             self.app.setPalette(palette)
 
     def pass_gen(self):
-        self.ui.password_gen_out.setPlainText(password_gen(8, True, True, True, True))
+        try:
+            self.ui.password_gen_out.setPlainText(
+                password_gen(self.password_gen_settings[0], *map(lambda x: x[0], self.password_gen_settings[1:])))
+            print(self.password_gen_settings)
+        except TypeError as e:
+            self.settings_open()
+
+    @staticmethod
+    def error_call(text, description):
+        msg = QtWidgets.QMessageBox()
+        msg.setIcon(QtWidgets.QMessageBox.Critical)
+        msg.setText(text)
+        msg.setInformativeText(description)
+        msg.setWindowTitle("Error")
+        msg.exec_()
 
     def save_cypher(self):
         try:
@@ -88,6 +104,29 @@ class App:
     def encrypt(self):
         a = codings_dict[self.ui.cypher_list.currentText()]
         self.ui.cypher_out.setText(a.code(self.ui.cypher_inp.toPlainText()))
+
+    def settings_open(self):
+        form = QtWidgets.QDialog()
+        dialog = Settings_dialog()
+        dialog.setupUi(form)
+        dialog.accept_button.clicked.connect(lambda x: self.checked_close(form, dialog))
+        form.exec_()
+
+    def checked_close(self, form, dialog):
+        if isinstance(dialog, Settings_dialog):
+            value = (int(dialog.length_choice.text()),
+                     [b.isChecked() for b in dialog.spec_symb_buttgroup.buttons()],
+                     [b.isChecked() for b in dialog.num_buttgroup.buttons()][::-1],
+                     [b.isChecked() for b in dialog.upper_buttgroup.buttons()][::-1],
+                     [b.isChecked() for b in dialog.lower_buttgroup.buttons()])
+            if value[0] <= 0:
+                self.error_call('Длина пароля не может быть равна 0', '')
+                return value
+            if not any([el[0] for el in value[1::]]):
+                self.error_call('Недостаточно параметров', '')
+                return value
+            form.close()
+            self.password_gen_settings = value
 
     def run(self):
         self.form.show()

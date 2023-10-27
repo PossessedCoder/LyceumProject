@@ -11,7 +11,8 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class Settings_dialog(object):
+class Settings_dialog:
+
     def setupUi(self, dialog):
         dialog.setObjectName("dialog")
         dialog.resize(890, 530)

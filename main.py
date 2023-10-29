@@ -5,7 +5,7 @@ from PyQt5.QtGui import QPalette, QColor
 from cypher_algoritms import *
 from ui import Ui_Form
 from dialogs.settings_dialog import Settings_dialog
-from scbd import *
+#from scbd import *
 
 class App:
     def __init__(self):
@@ -64,7 +64,6 @@ class App:
         try:
             self.ui.password_gen_out.setPlainText(
                 password_gen(self.password_gen_settings[0], *map(lambda x: x[0], self.password_gen_settings[1:])))
-            print(self.password_gen_settings)
         except TypeError as e:
             self.settings_open()
 

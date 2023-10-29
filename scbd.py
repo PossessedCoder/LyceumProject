@@ -3,26 +3,53 @@ import sqlite3
 con = sqlite3.connect('database/database.sqlite3')
 cursor = sqlite3.Cursor(con)
 
-print(cursor.execute('''SELECT login, password, notes
-FROM users
-JOIN data ON ID = loginID''').fetchall())
+
+class LoginNotFoundError(Exception):
+    pass
+
+
+class LoginInTableError(Exception):
+    pass
 
 
 def add_login(login):
-    pass
+    try:
+        cursor.execute(f'''INSERT INTO users (login) VALUES ('{login}')''')
+        con.commit()
+    except sqlite3.IntegrityError as e:
+        raise LoginInTableError
 
 
 def add_data(password, notes, login):
-    pass
+    if login in map(lambda x: x[0], cursor.execute('SELECT login FROM users').fetchall()):
+        loginID = cursor.execute(f'SELECT ID FROM users WHERE login = "{login}"').fetchone()[0]
+        cursor.execute(f'''INSERT INTO data (password, notes, loginID) VALUES ('{password}', '{notes}', '{loginID}')''')
+        con.commit()
+    else:
+        raise LoginNotFoundError
 
 
-def delete_data(password, notes, login):
-    pass
+def delete_data(login):
+    if login in map(lambda x: x[0], cursor.execute('SELECT login FROM users').fetchall()):
+        loginID = cursor.execute(f'SELECT ID FROM users WHERE login = "{login}"').fetchone()[0]
+        print(loginID)
+        cursor.execute(f'DELETE FROM data WHERE loginID = {loginID}')
+        con.commit()
+    else:
+        raise LoginNotFoundError
 
 
 def delete_login(login):
-    pass
+    if login in map(lambda x: x[0], cursor.execute('SELECT login FROM users').fetchall()):
+        delete_data(login)
+        cursor.execute(f'DELETE FROM users WHERE login = "{login}"')
+        con.commit()
+    else:
+        raise LoginNotFoundError
 
 
 def show_data(login):
-    return cursor.execute('SELECT login, password, notes FROM users JOIN data ON ID = loginID').fetchall()
+    loginID = cursor.execute(f'SELECT ID FROM users WHERE login = "{login}"').fetchone()[0]
+    return (cursor.execute(f'SELECT login FROM users WHERE ID = "{loginID}"').fetchone()[0],
+            cursor.execute(f'SELECT password, notes FROM data WHERE loginID = "{loginID}"').fetchall())
+

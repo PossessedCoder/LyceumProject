@@ -5,6 +5,7 @@ from PyQt5.QtGui import QPalette, QColor
 from cypher_algoritms import *
 from ui import Ui_Form
 from dialogs.settings_dialog import Settings_dialog
+from dialogs.register import Registration
 from scbd import *
 
 
@@ -25,6 +26,7 @@ class App:
         self.ui.decrypt_button.clicked.connect(self.decrypt)
         self.ui.encrypt_button.clicked.connect(self.encrypt)
         self.ui.settings.clicked.connect(self.settings_open)
+        self.ui.password_save_button.clicked.connect(self.register_open)
         self.password_gen_settings = None
 
     def theme_switch(self):
@@ -112,6 +114,14 @@ class App:
         dialog.accept_button.clicked.connect(lambda x: self.checked_close(form, dialog))
         form.exec_()
 
+    def register_open(self):
+        form = QtWidgets.QDialog()
+        dialog = Registration()
+        dialog.setupUi(form)
+        dialog.password.setText(self.ui.password_gen_out.toPlainText())
+        dialog.accept_button.clicked.connect(lambda x: self.checked_close(form, dialog))
+        form.exec_()
+
     def checked_close(self, form, dialog):
         if isinstance(dialog, Settings_dialog):
             value = (int(dialog.length_choice.text()),
@@ -127,6 +137,21 @@ class App:
                 return value
             form.close()
             self.password_gen_settings = value
+        elif isinstance(dialog, Registration):
+            value = (dialog.login.toPlainText(), dialog.password.toPlainText(), dialog.notes.toPlainText())
+            if len(value[0]) <= 0:
+                self.error_call('Длина логина не может быть равна 0', '')
+            elif len(value[1]) <= 0:
+                self.error_call('Длина пароля не может быть равна 0', '')
+            elif len(value[2]) <= 0:
+                self.error_call('Длина примечаний не может быть равна 0', '')
+            try:
+                add_login(value[0])
+                add_data(*value[1:], value[0])
+            except LoginInTableError:
+                add_data(*value[1:], value[0])
+            finally:
+                form.close()
 
     def run(self):
         self.form.show()

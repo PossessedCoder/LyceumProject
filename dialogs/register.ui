@@ -61,7 +61,7 @@
       </font>
      </property>
      <property name="text">
-      <string>Пометки</string>
+      <string>Примечания</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>

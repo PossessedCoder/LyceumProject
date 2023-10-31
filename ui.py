@@ -90,7 +90,10 @@ class Ui_Form(object):
         self.verticalLayout_3.setObjectName("verticalLayout_3")
         self.password_save_button = QtWidgets.QPushButton(Form)
         self.password_save_button.setObjectName("password_save_button")
+        self.bd_view = QtWidgets.QPushButton(Form)
+        self.bd_view.setObjectName("bd_view")
         self.verticalLayout_3.addWidget(self.password_save_button)
+        self.verticalLayout_3.addWidget(self.bd_view)
         self.settings = QtWidgets.QPushButton(Form)
         self.settings.setObjectName("settings")
         self.verticalLayout_3.addWidget(self.settings)
@@ -123,9 +126,10 @@ class Ui_Form(object):
         self.encrypt_button.setText(_translate("Form", "Зашифровать"))
         self.password_gen_label.setText(_translate("Form", "Генератор паролей"))
         self.pass_gen_button.setText(_translate("Form", "Сгенерировать пароль"))
-        self.password_save_button.setText(_translate("Form", "Save pass"))
+        self.password_save_button.setText(_translate("Form", "Сохранить пароль"))
         self.settings.setText(_translate("Form", "Settings"))
         self.theme_switch_button.setText(_translate("Form", "theme_switch"))
+        self.bd_view.setText(_translate('Form', 'Посмотреть пароли'))
 
 
 # class MyWidget(QtWidgets):

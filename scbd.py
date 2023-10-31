@@ -32,7 +32,6 @@ def add_data(password, notes, login):
 def delete_data(login):
     if login in map(lambda x: x[0], cursor.execute('SELECT login FROM users').fetchall()):
         loginID = cursor.execute(f'SELECT ID FROM users WHERE login = "{login}"').fetchone()[0]
-        print(loginID)
         cursor.execute(f'DELETE FROM data WHERE loginID = {loginID}')
         con.commit()
     else:
@@ -52,4 +51,16 @@ def show_data(login):
     loginID = cursor.execute(f'SELECT ID FROM users WHERE login = "{login}"').fetchone()[0]
     return (cursor.execute(f'SELECT login FROM users WHERE ID = "{loginID}"').fetchone()[0],
             cursor.execute(f'SELECT password, notes FROM data WHERE loginID = "{loginID}"').fetchall())
+
+
+def show_all_data():
+    logins = tuple(map(lambda x: x[0], cursor.execute(f'SELECT login FROM users').fetchall()))
+    print(logins)
+    return [show_data(el) for el in logins]
+
+
+def delete_ALL():
+    cursor.execute('DELETE FROM users')
+    cursor.execute('DELETE FROM data')
+    con.commit()
 

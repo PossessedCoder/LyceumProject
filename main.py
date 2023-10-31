@@ -6,6 +6,7 @@ from cypher_algoritms import *
 from ui import Ui_Form
 from dialogs.settings_dialog import Settings_dialog
 from dialogs.register import Registration
+from dialogs.bd_view import Bd_view
 from scbd import *
 
 
@@ -27,6 +28,7 @@ class App:
         self.ui.encrypt_button.clicked.connect(self.encrypt)
         self.ui.settings.clicked.connect(self.settings_open)
         self.ui.password_save_button.clicked.connect(self.register_open)
+        self.ui.bd_view.clicked.connect(self.bd_view)
         self.password_gen_settings = None
 
     def theme_switch(self):
@@ -122,6 +124,27 @@ class App:
         dialog.accept_button.clicked.connect(lambda x: self.checked_close(form, dialog))
         form.exec_()
 
+    def bd_view(self):
+        form = QtWidgets.QDialog()
+        dialog = Bd_view()
+        dialog.setupUi(form)
+
+        def refresh():
+            dialog.table.setRowCount(0)
+            for value in show_all_data():
+                for i in range(len(value[1])):
+                    dialog.table.insertRow(dialog.table.rowCount())
+                    dialog.table.setItem(dialog.table.rowCount() - 1, 0, QtWidgets.QTableWidgetItem(value[0]))
+                    dialog.table.setItem(dialog.table.rowCount() - 1, 1, QtWidgets.QTableWidgetItem(value[1][i][0]))
+                    dialog.table.setItem(dialog.table.rowCount() - 1, 2, QtWidgets.QTableWidgetItem(value[1][i][1]))
+
+        refresh()
+        dialog.accept_button.clicked.connect(lambda x: self.checked_close(form, dialog))
+        dialog.add.clicked.connect(lambda: [el() for el in (self.register_open, refresh)])
+        dialog.delete_all.clicked.connect(delete_ALL)
+
+        form.exec_()
+
     def checked_close(self, form, dialog):
         if isinstance(dialog, Settings_dialog):
             value = (int(dialog.length_choice.text()),
@@ -152,6 +175,8 @@ class App:
                 add_data(*value[1:], value[0])
             finally:
                 form.close()
+        elif isinstance(dialog, Bd_view):
+            form.close()
 
     def run(self):
         self.form.show()

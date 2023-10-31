@@ -55,7 +55,6 @@ def show_data(login):
 
 def show_all_data():
     logins = tuple(map(lambda x: x[0], cursor.execute(f'SELECT login FROM users').fetchall()))
-    print(logins)
     return [show_data(el) for el in logins]
 
 

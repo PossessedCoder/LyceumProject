@@ -70,7 +70,7 @@ class App:
         try:
             self.ui.password_gen_out.setPlainText(
                 password_gen(self.password_gen_settings[0], *map(lambda x: x[0], self.password_gen_settings[1:])))
-        except TypeError as e:
+        except TypeError:
             self.settings_open()
 
     @staticmethod
@@ -89,7 +89,7 @@ class App:
             if filename:
                 with open(filename, 'w') as file:
                     file.write(self.ui.cypher_out.toPlainText())
-        except Exception as e:
+        except Exception:
             pass
 
     def open_cypher(self):
@@ -99,7 +99,7 @@ class App:
                                                          'Текстовые файлы (*.txt);;Файлы данных (*.dat)')[0]
             with open(file, 'r') as f:
                 self.ui.cypher_inp.setText(f.read())
-        except Exception as e:
+        except Exception:
             pass
 
     def decrypt(self):
@@ -144,15 +144,21 @@ class App:
                 dialog.table.setItem(dialog.table.rowCount() - 1, 0, QtWidgets.QTableWidgetItem(val[0]))
                 dialog.table.setItem(dialog.table.rowCount() - 1, 1, QtWidgets.QTableWidgetItem(val[1]))
                 dialog.table.setItem(dialog.table.rowCount() - 1, 2, QtWidgets.QTableWidgetItem(val[2]))
+            self.last_edited_login = None
 
         def delete_all_visable():
             delete_ALL()
             dialog.table.setRowCount(0)
 
+        def edit_visiable(upd):
+            row, col = dialog.table.selectionModel().selection().indexes()[0].row(), \
+                dialog.table.selectionModel().selection().indexes()[0].column()
+            print(row, col)
+
         dialog.accept_button.clicked.connect(lambda x: self.checked_close(form, dialog))
         dialog.add.clicked.connect(add_login_visable)
         dialog.delete_all.clicked.connect(delete_all_visable)
-        dialog.delete.clicked.connect(delete_all_visable)
+        dialog.delete.clicked.connect(lambda: edit_visiable(''))
 
         form.exec_()
 
@@ -174,11 +180,14 @@ class App:
         elif isinstance(dialog, Registration):
             value = (dialog.login.toPlainText(), dialog.password.toPlainText(), dialog.notes.toPlainText())
             if len(value[0]) <= 0:
-                self.error_call('Длина логина не может быть равна 0', '')
+                self.error_call('Длина логина не может быть пустым', '')
             elif len(value[1]) <= 0:
-                self.error_call('Длина пароля не может быть равна 0', '')
+                self.error_call('Длина пароля не может быть пустым', '')
             elif len(value[2]) <= 0:
-                self.error_call('Длина примечаний не может быть равна 0', '')
+                self.error_call('Длина примечаний не может быть пустым', '')
+            elif show_all_data() and \
+                    tuple(filter(lambda x: x[0] == value[0] and tuple(value[1:]) in x[1], show_all_data())):
+                self.error_call('Не может быть двух одинаковых комбинаций логина, пароля и примечаний', '')
             else:
                 try:
                     add_login(value[0])

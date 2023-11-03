@@ -29,12 +29,14 @@ def add_data(password, notes, login):
         raise LoginNotFoundError
 
 
-def delete_password():
-    pass
+def edit_password(login, password, notes, upd):
+    loginID = cursor.execute(f'SELECT ID FROM users WHERE login = "{login}"').fetchone()[0]
+    cursor.execute(f'''UPDATE data SET password = '{upd}' WHERE loginID = {loginID}''')
 
 
-def delete_notes():
-    pass
+def edit_notes(login, password, notes, upd):
+    loginID = cursor.execute(f'SELECT ID FROM users WHERE login = "{login}"').fetchone()[0]
+    cursor.execute(f'''UPDATE data SET notes = '{upd}' WHERE loginID = {loginID}''')
 
 
 def delete_data(login):

@@ -29,6 +29,14 @@ def add_data(password, notes, login):
         raise LoginNotFoundError
 
 
+def delete_password():
+    pass
+
+
+def delete_notes():
+    pass
+
+
 def delete_data(login):
     if login in map(lambda x: x[0], cursor.execute('SELECT login FROM users').fetchall()):
         loginID = cursor.execute(f'SELECT ID FROM users WHERE login = "{login}"').fetchone()[0]
@@ -62,4 +70,3 @@ def delete_ALL():
     cursor.execute('DELETE FROM users')
     cursor.execute('DELETE FROM data')
     con.commit()
-

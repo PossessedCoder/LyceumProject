@@ -30,6 +30,7 @@ class App:
         self.ui.password_save_button.clicked.connect(self.register_open)
         self.ui.bd_view.clicked.connect(self.bd_view)
         self.password_gen_settings = None
+        self.last_edited_login = None
 
     def theme_switch(self):
         if self.app.palette().color(QPalette.Window).getRgb() != (53, 53, 53, 255):
@@ -128,20 +129,29 @@ class App:
         form = QtWidgets.QDialog()
         dialog = Bd_view()
         dialog.setupUi(form)
+        for value in show_all_data():
+            for i in range(len(value[1])):
+                dialog.table.insertRow(dialog.table.rowCount())
+                dialog.table.setItem(dialog.table.rowCount() - 1, 0, QtWidgets.QTableWidgetItem(value[0]))
+                dialog.table.setItem(dialog.table.rowCount() - 1, 1, QtWidgets.QTableWidgetItem(value[1][i][0]))
+                dialog.table.setItem(dialog.table.rowCount() - 1, 2, QtWidgets.QTableWidgetItem(value[1][i][1]))
 
-        def refresh():
+        def add_login_visable():
+            self.register_open()
+            val = self.last_edited_login
+            dialog.table.insertRow(dialog.table.rowCount())
+            dialog.table.setItem(dialog.table.rowCount() - 1, 0, QtWidgets.QTableWidgetItem(val[0]))
+            dialog.table.setItem(dialog.table.rowCount() - 1, 1, QtWidgets.QTableWidgetItem(val[1]))
+            dialog.table.setItem(dialog.table.rowCount() - 1, 2, QtWidgets.QTableWidgetItem(val[2]))
+
+        def delete_all_visable():
+            delete_ALL()
             dialog.table.setRowCount(0)
-            for value in show_all_data():
-                for i in range(len(value[1])):
-                    dialog.table.insertRow(dialog.table.rowCount())
-                    dialog.table.setItem(dialog.table.rowCount() - 1, 0, QtWidgets.QTableWidgetItem(value[0]))
-                    dialog.table.setItem(dialog.table.rowCount() - 1, 1, QtWidgets.QTableWidgetItem(value[1][i][0]))
-                    dialog.table.setItem(dialog.table.rowCount() - 1, 2, QtWidgets.QTableWidgetItem(value[1][i][1]))
 
-        refresh()
         dialog.accept_button.clicked.connect(lambda x: self.checked_close(form, dialog))
-        dialog.add.clicked.connect(lambda: [el() for el in (self.register_open, refresh)])
-        dialog.delete_all.clicked.connect(delete_ALL)
+        dialog.add.clicked.connect(add_login_visable)
+        dialog.delete_all.clicked.connect(delete_all_visable)
+        dialog.delete.clicked.connect(delete_all_visable)
 
         form.exec_()
 
@@ -174,6 +184,7 @@ class App:
             except LoginInTableError:
                 add_data(*value[1:], value[0])
             finally:
+                self.last_edited_login = value
                 form.close()
         elif isinstance(dialog, Bd_view):
             form.close()

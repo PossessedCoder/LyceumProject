@@ -139,10 +139,11 @@ class App:
         def add_login_visable():
             self.register_open()
             val = self.last_edited_login
-            dialog.table.insertRow(dialog.table.rowCount())
-            dialog.table.setItem(dialog.table.rowCount() - 1, 0, QtWidgets.QTableWidgetItem(val[0]))
-            dialog.table.setItem(dialog.table.rowCount() - 1, 1, QtWidgets.QTableWidgetItem(val[1]))
-            dialog.table.setItem(dialog.table.rowCount() - 1, 2, QtWidgets.QTableWidgetItem(val[2]))
+            if val:
+                dialog.table.insertRow(dialog.table.rowCount())
+                dialog.table.setItem(dialog.table.rowCount() - 1, 0, QtWidgets.QTableWidgetItem(val[0]))
+                dialog.table.setItem(dialog.table.rowCount() - 1, 1, QtWidgets.QTableWidgetItem(val[1]))
+                dialog.table.setItem(dialog.table.rowCount() - 1, 2, QtWidgets.QTableWidgetItem(val[2]))
 
         def delete_all_visable():
             delete_ALL()
@@ -178,14 +179,15 @@ class App:
                 self.error_call('Длина пароля не может быть равна 0', '')
             elif len(value[2]) <= 0:
                 self.error_call('Длина примечаний не может быть равна 0', '')
-            try:
-                add_login(value[0])
-                add_data(*value[1:], value[0])
-            except LoginInTableError:
-                add_data(*value[1:], value[0])
-            finally:
-                self.last_edited_login = value
-                form.close()
+            else:
+                try:
+                    add_login(value[0])
+                    add_data(*value[1:], value[0])
+                except LoginInTableError:
+                    add_data(*value[1:], value[0])
+                finally:
+                    self.last_edited_login = value
+                    form.close()
         elif isinstance(dialog, Bd_view):
             form.close()
 

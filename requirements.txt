@@ -1,2 +1,2 @@
 PyQt5
-pysqlite3
+db-sqlite3

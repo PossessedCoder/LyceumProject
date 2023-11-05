@@ -2,12 +2,13 @@ import sys
 
 from PyQt5 import QtWidgets
 from PyQt5.QtGui import QPalette, QColor
+
 from cypher_algoritms import *
-from ui import Ui_Form
-from dialogs.settings_dialog import Settings_dialog
-from dialogs.register import Registration
 from dialogs.bd_view import Bd_view
+from dialogs.register import Registration
+from dialogs.settings_dialog import Settings_dialog
 from scbd import *
+from ui import Ui_Form
 
 
 class App:
@@ -151,14 +152,33 @@ class App:
             dialog.table.setRowCount(0)
 
         def edit_visiable(upd):
-            row, col = dialog.table.selectionModel().selection().indexes()[0].row(), \
-                dialog.table.selectionModel().selection().indexes()[0].column()
-            print(row, col)
+            if upd == '':
+                row, col, update = dialog.table.selectionModel().selection().indexes()[0].row(), \
+                    dialog.table.selectionModel().selection().indexes()[0].column(), ''
+            else:
+                row, col, update = upd.row(), upd.column(), upd.text()
+            try:
+                login, password, notes = dialog.table.item(row, 0).text(), dialog.table.item(row, 1).text(), \
+                    dialog.table.item(row, 2).text()
+            except AttributeError:
+                return
+            if col == 0:
+                dialog.table.removeRow(row)
+                delete_login(dialog.table.item(row, col).text())
+            elif col == 1:
+                if not upd:
+                    dialog.table.setItem(row, col, QtWidgets.QTableWidgetItem(update))
+                edit_password(login, password, notes, update)
+            elif col == 2:
+                if not upd:
+                    dialog.table.setItem(row, col, QtWidgets.QTableWidgetItem(update))
+                edit_notes(login, password, notes, update)
 
         dialog.accept_button.clicked.connect(lambda x: self.checked_close(form, dialog))
         dialog.add.clicked.connect(add_login_visable)
         dialog.delete_all.clicked.connect(delete_all_visable)
         dialog.delete.clicked.connect(lambda: edit_visiable(''))
+        dialog.table.itemChanged.connect(edit_visiable)
 
         form.exec_()
 
@@ -208,3 +228,5 @@ class App:
 if __name__ == '__main__':
     app = App()
     app.run()
+
+# Это буду редачить

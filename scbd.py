@@ -31,12 +31,14 @@ def add_data(password, notes, login):
 
 def edit_password(login, password, notes, upd):
     loginID = cursor.execute(f'SELECT ID FROM users WHERE login = "{login}"').fetchone()[0]
-    cursor.execute(f'''UPDATE data SET password = '{upd}' WHERE loginID = {loginID}''')
+    cursor.execute(f'''UPDATE data SET password = '{upd}' WHERE loginID = '{loginID}' and password = '{password}' and
+    notes = '{notes}' ''')
 
 
 def edit_notes(login, password, notes, upd):
     loginID = cursor.execute(f'SELECT ID FROM users WHERE login = "{login}"').fetchone()[0]
-    cursor.execute(f'''UPDATE data SET notes = '{upd}' WHERE loginID = {loginID}''')
+    cursor.execute(f'''UPDATE data SET notes = '{upd}' WHERE loginID = '{loginID}' and password = '{password}' and
+        notes = '{notes}' ''')
 
 
 def delete_data(login):
@@ -72,3 +74,6 @@ def delete_ALL():
     cursor.execute('DELETE FROM users')
     cursor.execute('DELETE FROM data')
     con.commit()
+
+
+## Буду редачить

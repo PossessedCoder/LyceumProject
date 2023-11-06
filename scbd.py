@@ -31,12 +31,14 @@ def add_data(password, notes, login):
 
 def edit_password(login, password, notes, upd):
     loginID = cursor.execute(f'SELECT ID FROM users WHERE login = "{login}"').fetchone()[0]
+    print([(loginID, password, notes)])
     cursor.execute(f'''UPDATE data SET password = '{upd}' WHERE loginID = '{loginID}' and password = '{password}' and
     notes = '{notes}' ''')
 
 
 def edit_notes(login, password, notes, upd):
     loginID = cursor.execute(f'SELECT ID FROM users WHERE login = "{login}"').fetchone()[0]
+    print([(loginID, password, notes)])
     cursor.execute(f'''UPDATE data SET notes = '{upd}' WHERE loginID = '{loginID}' and password = '{password}' and
         notes = '{notes}' ''')
 

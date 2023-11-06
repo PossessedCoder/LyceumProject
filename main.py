@@ -32,6 +32,7 @@ class App:
         self.ui.bd_view.clicked.connect(self.bd_view)
         self.password_gen_settings = None
         self.last_edited_login = None
+        self.last_edited_table_item = None
 
     def theme_switch(self):
         if self.app.palette().color(QPalette.Window).getRgb() != (53, 53, 53, 255):
@@ -151,20 +152,43 @@ class App:
             delete_ALL()
             dialog.table.setRowCount(0)
 
+        def double_clicked():
+            row, col = dialog.table.selectionModel().selection().indexes()[0].row(), \
+                dialog.table.selectionModel().selection().indexes()[0].column()
+            self.last_edited_table_item = (dialog.table.item(row, 0).text(), dialog.table.item(row, 1).text(),
+                                           dialog.table.item(row, 2).text())
+
         def edit_visiable(upd):
             if upd == '':
-                row, col, update = dialog.table.selectionModel().selection().indexes()[0].row(), \
-                    dialog.table.selectionModel().selection().indexes()[0].column(), ''
+                try:
+                    row, col, update = dialog.table.selectionModel().selection().indexes()[0].row(), \
+                        dialog.table.selectionModel().selection().indexes()[0].column(), ''
+                except IndexError:
+                    self.error_call('Ничего не выделено', '')
+                    return
             else:
                 row, col, update = upd.row(), upd.column(), upd.text()
             try:
-                login, password, notes = dialog.table.item(row, 0).text(), dialog.table.item(row, 1).text(), \
-                    dialog.table.item(row, 2).text()
-            except AttributeError:
+                login, password, notes = self.last_edited_table_item
+                self.last_edited_table_item = None
+            except TypeError:
+                if upd == '':
+                    login, password, notes = dialog.table.item(row, 0).text(), dialog.table.item(row, 1).text(), \
+                        dialog.table.item(row, 2).text()
+                else:
+                    return
+            if show_all_data() and \
+                    tuple(
+                        filter(lambda x: x[0] == login and (password, update) if col == 2 else (update, notes) in x[1],
+                               show_all_data())):
+                self.error_call('Не может быть двух одинаковых комбинаций логина, пароля и примечаний', '')
+                dialog.table.setItem(row, col, QtWidgets.QTableWidgetItem(password) if col == 1 else
+                                     QtWidgets.QTableWidgetItem(notes))
                 return
             if col == 0:
-                dialog.table.removeRow(row)
-                delete_login(dialog.table.item(row, col).text())
+                if not upd:
+                    dialog.table.removeRow(row)
+                    delete_login(dialog.table.item(row, col).text())
             elif col == 1:
                 if not upd:
                     dialog.table.setItem(row, col, QtWidgets.QTableWidgetItem(update))
@@ -179,6 +203,7 @@ class App:
         dialog.delete_all.clicked.connect(delete_all_visable)
         dialog.delete.clicked.connect(lambda: edit_visiable(''))
         dialog.table.itemChanged.connect(edit_visiable)
+        dialog.table.doubleClicked.connect(double_clicked)
 
         form.exec_()
 

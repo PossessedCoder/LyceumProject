@@ -23,8 +23,19 @@ class App:
         self.ui.pass_gen_button.clicked.connect(self.pass_gen)
         self.ui.open_cypher_button.clicked.connect(self.open_cypher)
         self.ui.save_cypher_button.clicked.connect(self.save_cypher)
+        self.key_buttonn = QtWidgets.QSpinBox(self.form)
+        self.key_buttonw = QtWidgets.QLineEdit(self.form)
+        self.key_buttonw.setFixedHeight(20)
+        self.key_buttonw.setFixedWidth(110)
+        self.key_buttonw.hide()
+        self.key_buttonn.hide()
+        self.ui.verticalLayout_2.addWidget(self.key_buttonn)
+        self.ui.verticalLayout_2.addWidget(self.key_buttonw)
         for el in codings_dict.keys():
             self.ui.cypher_list.addItem(el)
+        self.ui.cypher_list.currentIndexChanged.connect(self.flag_check)
+        self.flags = []
+        self.active_but = None
         self.ui.decrypt_button.clicked.connect(self.decrypt)
         self.ui.encrypt_button.clicked.connect(self.encrypt)
         self.ui.settings.clicked.connect(self.settings_open)
@@ -104,13 +115,43 @@ class App:
         except Exception:
             pass
 
+    def flag_check(self):
+        if 'keyn' in codings_dict[self.ui.cypher_list.currentText()][1]:
+            self.ui.verticalLayout_2.addWidget(self.key_buttonn)
+            self.active_but = self.key_buttonn
+            self.key_buttonn.show()
+            self.key_buttonw.hide()
+        elif 'keyw' in codings_dict[self.ui.cypher_list.currentText()][1]:
+            self.ui.verticalLayout_2.addWidget(self.key_buttonw)
+            self.active_but = self.key_buttonw
+            self.key_buttonw.show()
+            self.key_buttonn.hide()
+        else:
+            self.key_buttonn.hide()
+            self.key_buttonw.hide()
+        self.flags = codings_dict[self.ui.cypher_list.currentText()][1]
+
     def decrypt(self):
-        a = codings_dict[self.ui.cypher_list.currentText()]
-        self.ui.cypher_out.setText(a.decode(self.ui.cypher_inp.toPlainText()))
+        if not self.flags:
+            a = codings_dict[self.ui.cypher_list.currentText()][0]
+            self.ui.cypher_out.setText(a.decode(self.ui.cypher_inp.toPlainText()))
+        elif 'keyn' in self.flags:
+            a = codings_dict[self.ui.cypher_list.currentText()][0]
+            self.ui.cypher_out.setText(a.decode(self.ui.cypher_inp.toPlainText(), self.key_buttonn.value()))
+        elif 'keyw' in self.flags:
+            a = codings_dict[self.ui.cypher_list.currentText()][0]
+            self.ui.cypher_out.setText(a.decode(self.ui.cypher_inp.toPlainText(), self.key_buttonw.text()))
 
     def encrypt(self):
-        a = codings_dict[self.ui.cypher_list.currentText()]
-        self.ui.cypher_out.setText(a.code(self.ui.cypher_inp.toPlainText()))
+        if not self.flags:
+            a = codings_dict[self.ui.cypher_list.currentText()][0]
+            self.ui.cypher_out.setText(a.code(self.ui.cypher_inp.toPlainText()))
+        elif 'keyn' in self.flags:
+            a = codings_dict[self.ui.cypher_list.currentText()][0]
+            self.ui.cypher_out.setText(a.code(self.ui.cypher_inp.toPlainText(), self.key_buttonn.value()))
+        elif 'keyw' in self.flags:
+            a = codings_dict[self.ui.cypher_list.currentText()][0]
+            self.ui.cypher_out.setText(a.code(self.ui.cypher_inp.toPlainText(), self.key_buttonw.text()))
 
     def settings_open(self):
         form = QtWidgets.QDialog()
@@ -183,7 +224,7 @@ class App:
                                show_all_data())):
                 self.error_call('Не может быть двух одинаковых комбинаций логина, пароля и примечаний', '')
                 dialog.table.setItem(row, col, QtWidgets.QTableWidgetItem(password) if col == 1 else
-                                     QtWidgets.QTableWidgetItem(notes))
+                QtWidgets.QTableWidgetItem(notes))
                 return
             if col == 0:
                 if not upd:

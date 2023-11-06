@@ -73,6 +73,94 @@ class Atbash:
         return self.code(st)
 
 
+class Ceaser:
+    def __init__(self):
+        self.alphabet_eng = tuple(ascii_lowercase)
+        self.alphabet_rus = ("а", "б", "в", "г", "д", "е", "ё", "ж", "з", "и", "й", "к", "л", "м", "н", "о",
+                             "п", "р", "с", "т", "у", "ф", "х", "ц", "ч", "ш", "щ", "ъ", "ы", "ь", "э", "ю",
+                             "я")
+
+    def code(self, st, key):
+        ans = ''
+        for el in st:
+            if el.lower() in self.alphabet_rus:
+                ans += self.alphabet_rus[
+                    (self.alphabet_rus.index(el.lower()) + key) % len(self.alphabet_rus)] if el == el.lower() else \
+                    self.alphabet_rus[(self.alphabet_rus.index(el.lower()) + key) % len(self.alphabet_rus)].upper()
+            elif el.lower() in self.alphabet_eng:
+                ans += self.alphabet_eng[
+                    (self.alphabet_eng.index(el.lower()) + key) % len(self.alphabet_eng)] if el == el.lower() else \
+                    self.alphabet_eng[(self.alphabet_eng.index(el.lower()) + key) % len(self.alphabet_eng)].upper()
+            else:
+                ans += el
+        return ans
+
+    def decode(self, st, key):
+        ans = ''
+        for el in st:
+            if el.lower() in self.alphabet_rus:
+                ans += self.alphabet_rus[
+                    (self.alphabet_rus.index(el.lower()) - key) % len(self.alphabet_rus)] if el == el.lower() else \
+                    self.alphabet_rus[(self.alphabet_rus.index(el.lower()) - key) % len(self.alphabet_rus)].upper()
+            elif el.lower() in self.alphabet_eng:
+                ans += self.alphabet_eng[
+                    (self.alphabet_eng.index(el.lower()) - key) % len(self.alphabet_eng)] if el == el.lower() else \
+                    self.alphabet_eng[(self.alphabet_eng.index(el.lower()) - key) % len(self.alphabet_eng)].upper()
+            else:
+                ans += el
+        return ans
+
+
+class Vigener:
+    def __init__(self):
+        self.alphabet_eng = tuple(ascii_lowercase)
+        self.alphabet_rus = ("а", "б", "в", "г", "д", "е", "ё", "ж", "з", "и", "й", "к", "л", "м", "н", "о",
+                             "п", "р", "с", "т", "у", "ф", "х", "ц", "ч", "ш", "щ", "ъ", "ы", "ь", "э", "ю",
+                             "я")
+
+    def code(self, st, key):
+        ans = ''
+        key = [self.alphabet_eng.index(el) if el in self.alphabet_eng else self.alphabet_rus.index(el) for el in
+               key.lower() if el in self.alphabet_eng or el in self.alphabet_rus]
+        for i, el in enumerate(st):
+            if el.lower() in self.alphabet_rus:
+                ans += self.alphabet_rus[
+                    (self.alphabet_rus.index(el.lower()) + key[i % len(key)]) % len(
+                        self.alphabet_rus)] if el == el.lower() else \
+                    self.alphabet_rus[
+                        (self.alphabet_rus.index(el.lower()) + key[i % len(key)]) % len(self.alphabet_rus)].upper()
+            elif el.lower() in self.alphabet_eng:
+                ans += self.alphabet_eng[
+                    (self.alphabet_eng.index(el.lower()) + key[i % len(key)]) % len(
+                        self.alphabet_eng)] if el == el.lower() else \
+                    self.alphabet_eng[
+                        (self.alphabet_eng.index(el.lower()) + key[i % len(key)]) % len(self.alphabet_eng)].upper()
+            else:
+                ans += el
+        return ans
+
+    def decode(self, st, key):
+        ans = ''
+        key = [self.alphabet_eng.index(el) if el in self.alphabet_eng else self.alphabet_rus.index(el) for el in
+               key.lower() if el in self.alphabet_eng or el in self.alphabet_rus]
+        for i, el in enumerate(st):
+            if el.lower() in self.alphabet_rus:
+                ans += self.alphabet_rus[
+                    (self.alphabet_rus.index(el.lower()) - key[i % len(key)]) % len(
+                        self.alphabet_rus)] if el == el.lower() else \
+                    self.alphabet_rus[
+                        (self.alphabet_rus.index(el.lower()) - key[i % len(key)]) % len(self.alphabet_rus)].upper()
+            elif el.lower() in self.alphabet_eng:
+                ans += self.alphabet_eng[
+                    (self.alphabet_eng.index(el.lower()) - key[i % len(key)]) % len(
+                        self.alphabet_eng)] if el == el.lower() else \
+                    self.alphabet_eng[
+                        (self.alphabet_eng.index(el.lower()) - key[i % len(key)]) % len(self.alphabet_eng)].upper()
+            else:
+                ans += el
+        return ans
+
+
 def password_gen(length, contains_special_symbols, contains_numbers, contains_upper_letters, contains_lower_letters):
     alphabet = [ascii_lowercase, ascii_lowercase.upper(), '1234567890', '!@#$%^&*()—_+=;:,./?\\|`~[]{}']
     if not contains_special_symbols:
@@ -86,7 +174,7 @@ def password_gen(length, contains_special_symbols, contains_numbers, contains_up
     alphabet_copy, alphabet = alphabet.copy()[:], []
     for el in alphabet_copy:
         alphabet.extend(tuple(el))
-    alphabet_copy = ()
+    alphabet_copy = None
     if length <= 0:
         raise LegthError('Длина пароля должна быть больше 0')
     if len(alphabet) == 0:
@@ -97,4 +185,5 @@ def password_gen(length, contains_special_symbols, contains_numbers, contains_up
     return ''.join(gen)
 
 
-codings_dict = {'Морзе': Morse(), 'Атбаш': Atbash()}
+codings_dict = {'Морзе': (Morse(), ['key']), 'Атбаш': (Atbash(), ['key']), 'Шифр Цезаря': (Ceaser(), ['keyn']),
+                'Шифр Виженера': (Vigener(), ['keyw'])}

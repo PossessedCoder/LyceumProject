@@ -62,6 +62,9 @@ class Ui_Form(object):
         self.encrypt_button.setObjectName("encrypt_button")
         self.cypher_button_group.addButton(self.encrypt_button)
         self.verticalLayout_2.addWidget(self.encrypt_button)
+        self.reference_button = QtWidgets.QPushButton(Form)
+        self.reference_button.setObjectName("reference_button")
+        self.verticalLayout_2.addWidget(self.reference_button)
         self.horizontalLayout_3.addLayout(self.verticalLayout_2)
         self.cypher_out = QtWidgets.QTextEdit(Form)
         self.cypher_out.setObjectName("cypher_out")
@@ -128,6 +131,7 @@ class Ui_Form(object):
         self.pass_gen_button.setText(_translate("Form", "Сгенерировать пароль"))
         self.password_save_button.setText(_translate("Form", "Сохранить пароль"))
         self.settings.setText(_translate("Form", "Settings"))
+        self.reference_button.setText(_translate('Form', 'Справка'))
         self.theme_switch_button.setText(_translate("Form", "theme_switch"))
         self.bd_view.setText(_translate('Form', 'Посмотреть пароли'))
 

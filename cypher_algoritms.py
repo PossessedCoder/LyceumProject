@@ -1,4 +1,4 @@
-from string import ascii_lowercase
+from string import ascii_lowercase, ascii_uppercase
 from random import choice
 
 
@@ -161,6 +161,20 @@ class Vigener:
         return ans
 
 
+class Vernam:
+    def __init__(self):
+        pass
+
+    def code(self, st, key):
+        ans = []
+        st = [bin(ord(el)) for el in st]
+        key = [bin(ord(el)) for el in key]
+        for i, el in enumerate(st):
+            ans.append(int(el, 2) ^ int(key[i], 2))
+        ans = ' '.join([chr(el) for el in ans])
+        return ans
+
+
 def password_gen(length, contains_special_symbols, contains_numbers, contains_upper_letters, contains_lower_letters):
     alphabet = [ascii_lowercase, ascii_lowercase.upper(), '1234567890', '!@#$%^&*()—_+=;:,./?\\|`~[]{}']
     if not contains_special_symbols:
@@ -185,5 +199,6 @@ def password_gen(length, contains_special_symbols, contains_numbers, contains_up
     return ''.join(gen)
 
 
+print(Vernam().code('LONDON', 'SYSTEM'))
 codings_dict = {'Морзе': (Morse(), ['key']), 'Атбаш': (Atbash(), ['key']), 'Шифр Цезаря': (Ceaser(), ['keyn']),
                 'Шифр Виженера': (Vigener(), ['keyw'])}

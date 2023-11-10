@@ -88,7 +88,7 @@ class App:
             self.settings_open()
 
     @staticmethod
-    def error_call(text, description):
+    def error_call(text):
         msg = QtWidgets.QMessageBox()
         msg.setIcon(QtWidgets.QMessageBox.Critical)
         msg.setText(text)
@@ -109,7 +109,7 @@ class App:
     def save_cypher(self):
         try:
             filename, _ = QtWidgets.QFileDialog.getSaveFileName(self.form, "Save File", ".",
-                                                                "Текстовые файлы (*.txt);;Файлы данных(*.dat)")
+                                                                "Текстовые файлы (*.txt)")
             if filename:
                 with open(filename, 'w') as file:
                     file.write(self.ui.cypher_out.toPlainText())
@@ -120,7 +120,7 @@ class App:
         try:
             file = QtWidgets.QFileDialog.getOpenFileName(self.form,
                                                          'Выберите файл', '',
-                                                         'Текстовые файлы (*.txt);;Файлы данных (*.dat)')[0]
+                                                         'Текстовые файлы (*.txt)')[0]
             with open(file, 'r') as f:
                 self.ui.cypher_inp.setText(f.read())
         except Exception:
@@ -151,11 +151,13 @@ class App:
             self.ui.cypher_out.setText(a.decode(self.ui.cypher_inp.toPlainText(), self.key_buttonn.value()))
         elif 'keyw' in self.flags:
             a = codings_dict[self.ui.cypher_list.currentText()][0]
-            if not self.key_buttonw.text().strip() != '' and not self.key_buttonw.text().isalnum():
-                self.ui.cypher_out.setText(a.code(self.ui.cypher_inp.toPlainText(), self.key_buttonw.text()))
+            if self.key_buttonw.text().strip() != '':
+                try:
+                    self.ui.cypher_out.setText(a.decode(self.ui.cypher_inp.toPlainText(), self.key_buttonw.text()))
+                except ZeroDivisionError:
+                    self.error_call('Ключ шифрования должен содержать буквы русского или английского алфавитов')
             else:
-                self.error_call('Нет ключа шифрования', '')
-
+                self.error_call('Нет ключа шифрования')
 
     def encrypt(self):
         if not self.flags:
@@ -169,10 +171,10 @@ class App:
             if self.key_buttonw.text().strip() != '':
                 try:
                     self.ui.cypher_out.setText(a.code(self.ui.cypher_inp.toPlainText(), self.key_buttonw.text()))
-                except ZeroDivisionError as e:
-                    self.error_call('Ключ шифрования должен содержать буквы русского или английского алфавитов', '')
+                except ZeroDivisionError:
+                    self.error_call('Ключ шифрования должен содержать буквы русского или английского алфавитов')
             else:
-                self.error_call('Нет ключа шифрования', '')
+                self.error_call('Нет ключа шифрования')
 
     def settings_open(self):
         form = QtWidgets.QDialog()
@@ -226,7 +228,7 @@ class App:
                     row, col, update = dialog.table.selectionModel().selection().indexes()[0].row(), \
                         dialog.table.selectionModel().selection().indexes()[0].column(), ''
                 except IndexError:
-                    self.error_call('Ничего не выделено', '')
+                    self.error_call('Ничего не выделено')
                     return
             else:
                 row, col, update = upd.row(), upd.column(), upd.text()
@@ -243,7 +245,7 @@ class App:
                     len(tuple(
                         filter(lambda x: x[0] == login and (password, update) if col == 2 else (update, notes) in x[1],
                                show_all_data()))) > 1:
-                self.error_call('Не может быть двух одинаковых комбинаций логина, пароля и примечаний', '')
+                self.error_call('Не может быть двух одинаковых комбинаций логина, пароля и примечаний')
                 dialog.table.setItem(row, col, QtWidgets.QTableWidgetItem(password) if col == 1 else
                 QtWidgets.QTableWidgetItem(notes))
                 return
@@ -277,24 +279,24 @@ class App:
                      [b.isChecked() for b in dialog.upper_buttgroup.buttons()][::-1],
                      [b.isChecked() for b in dialog.lower_buttgroup.buttons()])
             if value[0] <= 0:
-                self.error_call('Длина пароля не может быть равна 0', '')
+                self.error_call('Длина пароля не может быть равна 0')
                 return value
             if not any([el[0] for el in value[1::]]):
-                self.error_call('Недостаточно параметров', '')
+                self.error_call('Недостаточно параметров')
                 return value
             form.close()
             self.password_gen_settings = value
         elif isinstance(dialog, Registration):
             value = (dialog.login.toPlainText(), dialog.password.toPlainText(), dialog.notes.toPlainText())
             if len(value[0]) <= 0:
-                self.error_call('Длина логина не может быть пустым', '')
+                self.error_call('Длина логина не может быть пустым')
             elif len(value[1]) <= 0:
-                self.error_call('Длина пароля не может быть пустым', '')
+                self.error_call('Длина пароля не может быть пустым')
             elif len(value[2]) <= 0:
-                self.error_call('Длина примечаний не может быть пустым', '')
+                self.error_call('Длина примечаний не может быть пустым')
             elif show_all_data() and \
                     tuple(filter(lambda x: x[0] == value[0] and tuple(value[1:]) in x[1], show_all_data())):
-                self.error_call('Не может быть двух одинаковых комбинаций логина, пароля и примечаний', '')
+                self.error_call('Не может быть двух одинаковых комбинаций логина, пароля и примечаний')
             else:
                 try:
                     add_login(value[0])

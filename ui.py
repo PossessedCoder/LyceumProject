@@ -130,9 +130,9 @@ class Ui_Form(object):
         self.password_gen_label.setText(_translate("Form", "Генератор паролей"))
         self.pass_gen_button.setText(_translate("Form", "Сгенерировать пароль"))
         self.password_save_button.setText(_translate("Form", "Сохранить пароль"))
-        self.settings.setText(_translate("Form", "Settings"))
+        self.settings.setText(_translate("Form", "Настройки"))
         self.reference_button.setText(_translate('Form', 'Справка'))
-        self.theme_switch_button.setText(_translate("Form", "theme_switch"))
+        self.theme_switch_button.setText(_translate("Form", "Сменить тему"))
         self.bd_view.setText(_translate('Form', 'Посмотреть пароли'))
 
 

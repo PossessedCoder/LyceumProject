@@ -151,7 +151,11 @@ class App:
             self.ui.cypher_out.setText(a.decode(self.ui.cypher_inp.toPlainText(), self.key_buttonn.value()))
         elif 'keyw' in self.flags:
             a = codings_dict[self.ui.cypher_list.currentText()][0]
-            self.ui.cypher_out.setText(a.decode(self.ui.cypher_inp.toPlainText(), self.key_buttonw.text()))
+            if not self.key_buttonw.text().strip() != '' and not self.key_buttonw.text().isalnum():
+                self.ui.cypher_out.setText(a.code(self.ui.cypher_inp.toPlainText(), self.key_buttonw.text()))
+            else:
+                self.error_call('Нет ключа шифрования', '')
+
 
     def encrypt(self):
         if not self.flags:
@@ -162,9 +166,12 @@ class App:
             self.ui.cypher_out.setText(a.code(self.ui.cypher_inp.toPlainText(), self.key_buttonn.value()))
         elif 'keyw' in self.flags:
             a = codings_dict[self.ui.cypher_list.currentText()][0]
-            try:
-                self.ui.cypher_out.setText(a.code(self.ui.cypher_inp.toPlainText(), self.key_buttonw.text()))
-            except ZeroDivisionError as e:
+            if self.key_buttonw.text().strip() != '':
+                try:
+                    self.ui.cypher_out.setText(a.code(self.ui.cypher_inp.toPlainText(), self.key_buttonw.text()))
+                except ZeroDivisionError as e:
+                    self.error_call('Ключ шифрования должен содержать буквы русского или английского алфавитов', '')
+            else:
                 self.error_call('Нет ключа шифрования', '')
 
     def settings_open(self):

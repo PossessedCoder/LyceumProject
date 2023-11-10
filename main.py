@@ -219,17 +219,17 @@ class App:
                 else:
                     return
             if show_all_data() and \
-                    tuple(
+                    len(tuple(
                         filter(lambda x: x[0] == login and (password, update) if col == 2 else (update, notes) in x[1],
-                               show_all_data())):
+                               show_all_data()))) > 1:
                 self.error_call('Не может быть двух одинаковых комбинаций логина, пароля и примечаний', '')
                 dialog.table.setItem(row, col, QtWidgets.QTableWidgetItem(password) if col == 1 else
                 QtWidgets.QTableWidgetItem(notes))
                 return
             if col == 0:
                 if not upd:
-                    dialog.table.removeRow(row)
                     delete_login(dialog.table.item(row, col).text())
+                    dialog.table.removeRow(row)
             elif col == 1:
                 if not upd:
                     dialog.table.setItem(row, col, QtWidgets.QTableWidgetItem(update))

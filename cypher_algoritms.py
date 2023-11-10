@@ -199,6 +199,6 @@ def password_gen(length, contains_special_symbols, contains_numbers, contains_up
     return ''.join(gen)
 
 
-print(Vernam().code('LONDON', 'SYSTEM'))
-codings_dict = {'Морзе': (Morse(), ['key']), 'Атбаш': (Atbash(), ['key']), 'Шифр Цезаря': (Ceaser(), ['keyn']),
+#print(Vernam().code('LONDON', 'SYSTEM'))
+codings_dict = {'Морзе': (Morse(), []), 'Атбаш': (Atbash(), []), 'Шифр Цезаря': (Ceaser(), ['keyn']),
                 'Шифр Виженера': (Vigener(), ['keyw'])}

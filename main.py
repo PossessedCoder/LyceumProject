@@ -40,6 +40,7 @@ class App:
         self.ui.encrypt_button.clicked.connect(self.encrypt)
         self.ui.settings.clicked.connect(self.settings_open)
         self.ui.password_save_button.clicked.connect(self.register_open)
+        self.ui.reference_button.clicked.connect(self.reference_show)
         self.ui.bd_view.clicked.connect(self.bd_view)
         self.password_gen_settings = None
         self.last_edited_login = None
@@ -91,9 +92,19 @@ class App:
         msg = QtWidgets.QMessageBox()
         msg.setIcon(QtWidgets.QMessageBox.Critical)
         msg.setText(text)
-        msg.setInformativeText(description)
         msg.setWindowTitle("Error")
         msg.exec_()
+
+    @staticmethod
+    def info_call(text):
+        msg = QtWidgets.QMessageBox()
+        msg.setIcon(QtWidgets.QMessageBox.Icon.Information)
+        msg.setText(text)
+        msg.setWindowTitle("Info")
+        msg.exec_()
+
+    def reference_show(self):
+        self.info_call(codings_info[self.ui.cypher_list.currentText()])
 
     def save_cypher(self):
         try:
@@ -151,7 +162,10 @@ class App:
             self.ui.cypher_out.setText(a.code(self.ui.cypher_inp.toPlainText(), self.key_buttonn.value()))
         elif 'keyw' in self.flags:
             a = codings_dict[self.ui.cypher_list.currentText()][0]
-            self.ui.cypher_out.setText(a.code(self.ui.cypher_inp.toPlainText(), self.key_buttonw.text()))
+            try:
+                self.ui.cypher_out.setText(a.code(self.ui.cypher_inp.toPlainText(), self.key_buttonw.text()))
+            except ZeroDivisionError as e:
+                self.error_call('Нет ключа шифрования', '')
 
     def settings_open(self):
         form = QtWidgets.QDialog()

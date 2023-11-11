@@ -241,8 +241,9 @@ class App:
                         dialog.table.item(row, 2).text()
                 else:
                     return
-            upd_other = (update, value) if col == 1 else (password, update)
+            upd_other = (update, notes) if col == 1 else (password, update)
             if show_all_data() and tuple(filter(lambda x: x[0] == login and upd_other in x[1], show_all_data())):
+
                 self.error_call('Не может быть двух одинаковых комбинаций логина, пароля и примечаний')
                 dialog.table.setItem(row, col, QtWidgets.QTableWidgetItem(password) if col == 1 else
                 QtWidgets.QTableWidgetItem(notes))

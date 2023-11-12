@@ -142,7 +142,7 @@ class Settings_dialog:
 
     def retranslateUi(self, dialog):
         _translate = QtCore.QCoreApplication.translate
-        dialog.setWindowTitle(_translate("dialog", "Настройки"))
+        dialog.setWindowTitle(_translate("dialog", "Настройки генератора паролей"))
         self.radioButton.setText(_translate("dialog", "Да"))
         self.radioButton_4.setText(_translate("dialog", "Нет"))
         self.radioButton_3.setText(_translate("dialog", "Да"))

@@ -115,7 +115,7 @@ class Ui_Form(object):
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "Form"))
+        Form.setWindowTitle(_translate("Form", "CypherSafe"))
         self.save_cypher_button.setText(_translate("Form", "Сохранить"))
         self.open_cypher_button.setText(_translate("Form", "Открыть"))
         self.enc_dec_label.setText(_translate("Form", "Шифровальщик/Дешифровальщик"))

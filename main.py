@@ -288,11 +288,11 @@ class App:
         elif isinstance(dialog, Registration):
             value = (dialog.login.toPlainText(), dialog.password.toPlainText(), dialog.notes.toPlainText())
             if len(value[0]) <= 0:
-                self.error_call('Длина логина не может быть пустым')
+                self.error_call('Логин не может быть пустым')
             elif len(value[1]) <= 0:
-                self.error_call('Длина пароля не может быть пустым')
+                self.error_call('Пароль не может быть пустым')
             elif len(value[2]) <= 0:
-                self.error_call('Длина примечаний не может быть пустым')
+                self.error_call('Примечания не могут быть пустыми')
             elif show_all_data() and \
                     tuple(filter(lambda x: x[0] == value[0] and tuple(value[1:]) in x[1], show_all_data())):
                 self.error_call('Не может быть двух одинаковых комбинаций логина, пароля и примечаний')

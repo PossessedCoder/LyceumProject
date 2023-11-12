@@ -70,7 +70,7 @@ class Bd_view(object):
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
-        Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
+        Dialog.setWindowTitle(_translate("Dialog", "Менеджер паролей"))
         self.delete.setText(_translate("Dialog", "Удалить"))
         self.accept_button.setText(_translate('Dialog', 'Назад'))
         self.delete_all.setText(_translate('Dialog', 'Удалить всё'))
